@@ -7,6 +7,7 @@ COPY --from=ghcr.io/astral-sh/uv:latest /uv /usr/local/bin/uv
 
 # 의존성 파일 복사
 COPY pyproject.toml .
+COPY README.md .
 COPY src/ src/
 
 # 의존성 설치
