@@ -1,0 +1,34 @@
+# API 키 / 환경변수
+.env
+.env.*
+*.env
+!.env.example
+
+# 개인 데이터 (SQLite DB)
+~/.label_sommelier/
+*.db
+*.db-wal
+*.db-shm
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.venv/
+venv/
+.uv/
+dist/
+*.egg-info/
+build/
+
+# IDE
+.vscode/
+.idea/
+
+# 이전 버전 파일
+data/
+data_test/
+*.json.bak
+
+*.json

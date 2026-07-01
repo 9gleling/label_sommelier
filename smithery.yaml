@@ -1,0 +1,22 @@
+startCommand:
+  type: stdio
+  configSchema:
+    type: object
+    required:
+      - anthropicApiKey
+    properties:
+      anthropicApiKey:
+        type: string
+        description: Anthropic API key for Claude vision and text analysis
+      kakaoRestApiKey:
+        type: string
+        description: Kakao REST API key for wine shop search (optional)
+  commandFunction: |-
+    (config) => ({
+      command: 'uv',
+      args: ['run', 'label-sommelier'],
+      env: {
+        ANTHROPIC_API_KEY: config.anthropicApiKey,
+        KAKAO_REST_API_KEY: config.kakaoRestApiKey || ''
+      }
+    })
