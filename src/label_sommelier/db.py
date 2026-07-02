@@ -1,10 +1,11 @@
 """SQLite database layer for Label Sommelier."""
 import json
+import os
 import sqlite3
 from pathlib import Path
 from typing import Any
 
-_DB_DIR = Path.home() / ".label_sommelier"
+_DB_DIR = Path(os.environ.get("LABEL_SOMMELIER_DB_DIR", str(Path.home() / ".label_sommelier")))
 _DB_PATH = _DB_DIR / "sommelier.db"
 
 

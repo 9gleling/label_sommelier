@@ -10,11 +10,14 @@ COPY pyproject.toml .
 COPY README.md .
 COPY src/ src/
 
-# 의존성 설치
-RUN uv pip install --system -e .
+# 의존성 설치 (non-editable, 프로덕션 안정)
+RUN uv pip install --system .
 
-# 환경변수는 .env 파일 또는 docker run -e 로 주입
-# docker run --env-file .env label-sommelier
+# 데이터 디렉토리
+RUN mkdir -p /app/data
+ENV LABEL_SOMMELIER_DB_DIR="/app/data"
+
+# 환경변수는 런타임에 주입
 ENV ANTHROPIC_API_KEY=""
 ENV KAKAO_REST_API_KEY=""
 
