@@ -20,7 +20,13 @@ from .tools_wine import (
     ScanWineLabelHandler,
 )
 
-mcp = FastMCP("label-sommelier")
+mcp = FastMCP(
+    "label-sommelier",
+    host="0.0.0.0",
+    port=int(os.environ.get("PORT", 8080)),
+    stateless_http=True,      # 클라우드: 요청마다 fresh 세션
+    transport_security=None,  # DNS rebinding 보호 비활성 (로컬호스트 아님)
+)
 
 # 핸들러 인스턴스
 _scan = ScanWineLabelHandler()
@@ -144,8 +150,7 @@ def get_preference_stats(user_id: str = "default") -> str:
 
 def main():
     db.init_db()
-    port = int(os.environ.get("PORT", 8080))
-    mcp.run(transport="streamable-http", host="0.0.0.0", port=port)
+    mcp.run(transport="streamable-http")
 
 
 if __name__ == "__main__":
