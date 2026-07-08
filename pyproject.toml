@@ -6,9 +6,9 @@ readme = "README.md"
 requires-python = ">=3.10"
 dependencies = [
     "anthropic>=0.40.0",
-    "mcp>=1.7.1",
-    "flask>=3.0.0",
-    "flask-cors>=4.0.0",
+    "mcp[cli]>=1.7.1",
+    "uvicorn[standard]>=0.30.0",
+    "starlette>=0.40.0",
 ]
 
 [[project.authors]]
