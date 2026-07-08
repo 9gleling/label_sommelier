@@ -7,6 +7,8 @@ requires-python = ">=3.10"
 dependencies = [
     "anthropic>=0.40.0",
     "mcp>=1.7.1",
+    "flask>=3.0.0",
+    "flask-cors>=4.0.0",
 ]
 
 [[project.authors]]
@@ -15,6 +17,7 @@ email = "9gleling@gmail.com"
 
 [project.scripts]
 label-sommelier = "label_sommelier:main"
+label-sommelier-http = "label_sommelier.http_server:main"
 
 [build-system]
 requires = ["hatchling"]

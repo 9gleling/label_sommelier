@@ -1,0 +1,154 @@
+{
+  "name": "label-sommelier",
+  "description": "와인 라벨 스캔, 취향 매칭, 주변 와인샵 검색 MCP 서버",
+  "tools": [
+    {
+      "name": "scan_wine_label",
+      "description": "와인 라벨 이미지를 분석하여 와인 정보(이름, 생산자, 빈티지, 타입, 원산지, 품종, 도수, 가격대)를 추출합니다.",
+      "endpoint": "/tools/scan_wine_label",
+      "method": "POST",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "image_url": { "type": "string", "description": "라벨 이미지 URL" },
+          "image_path": { "type": "string", "description": "라벨 이미지 파일 경로" },
+          "user_id": { "type": "string", "description": "사용자 ID (기본값: default)", "default": "default" }
+        }
+      }
+    },
+    {
+      "name": "match_preference",
+      "description": "와인 정보와 사용자 취향을 매칭하여 점수와 등급을 반환합니다.",
+      "endpoint": "/tools/match_preference",
+      "method": "POST",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "wine_info": { "type": "object", "description": "scan_wine_label 결과의 wine_info" },
+          "user_id": { "type": "string", "default": "default" }
+        },
+        "required": ["wine_info"]
+      }
+    },
+    {
+      "name": "get_wine_detail",
+      "description": "와인 이름으로 상세 정보(페어링, 서빙 온도, 음용 시기 등)를 조회합니다.",
+      "endpoint": "/tools/get_wine_detail",
+      "method": "POST",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "wine_name": { "type": "string", "description": "와인 이름" },
+          "producer": { "type": "string" },
+          "vintage": { "type": "integer" }
+        },
+        "required": ["wine_name"]
+      }
+    },
+    {
+      "name": "save_preference",
+      "description": "사용자 취향(당도, 산도, 탄닌, 바디, 선호 품종/타입, 예산)을 저장합니다.",
+      "endpoint": "/tools/save_preference",
+      "method": "POST",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "user_id": { "type": "string", "default": "default" },
+          "sweetness": { "type": "integer", "description": "당도 1-5" },
+          "acidity": { "type": "integer", "description": "산도 1-5" },
+          "tannin": { "type": "integer", "description": "탄닌 1-5" },
+          "body": { "type": "integer", "description": "바디 1-5" },
+          "favorite_varieties": { "type": "array", "items": { "type": "string" } },
+          "favorite_types": { "type": "array", "items": { "type": "string" } },
+          "budget_max_krw": { "type": "integer" },
+          "memo": { "type": "string" }
+        }
+      }
+    },
+    {
+      "name": "get_history",
+      "description": "사용자의 와인 스캔 히스토리를 조회합니다.",
+      "endpoint": "/tools/get_history",
+      "method": "POST",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "user_id": { "type": "string", "default": "default" },
+          "limit": { "type": "integer", "default": 20 },
+          "min_score": { "type": "integer", "default": 0 }
+        }
+      }
+    },
+    {
+      "name": "recommend_wine",
+      "description": "저장된 취향을 기반으로 와인을 추천합니다.",
+      "endpoint": "/tools/recommend_wine",
+      "method": "POST",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "user_id": { "type": "string", "default": "default" },
+          "occasion": { "type": "string", "description": "상황 (예: 생일파티, 데이트)" },
+          "budget_krw": { "type": "integer" }
+        }
+      }
+    },
+    {
+      "name": "find_wine_shops",
+      "description": "카카오맵 API로 주변 와인샵을 검색합니다.",
+      "endpoint": "/tools/find_wine_shops",
+      "method": "POST",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "location": { "type": "string", "description": "검색 위치 (예: 강남역)" },
+          "radius_m": { "type": "integer", "default": 1000 },
+          "max_results": { "type": "integer", "default": 10 }
+        },
+        "required": ["location"]
+      }
+    },
+    {
+      "name": "search_wine",
+      "description": "와인 이름으로 국내 가격, 평점, 페어링 정보를 검색합니다.",
+      "endpoint": "/tools/search_wine",
+      "method": "POST",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "query": { "type": "string", "description": "검색어 (와인명, 생산자, 품종 등)" },
+          "wine_type": { "type": "string" },
+          "max_budget_krw": { "type": "integer" }
+        },
+        "required": ["query"]
+      }
+    },
+    {
+      "name": "share_tasting_note",
+      "description": "공유용 테이스팅 노트 카드(마크다운)를 생성합니다.",
+      "endpoint": "/tools/share_tasting_note",
+      "method": "POST",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "scan_id": { "type": "integer" },
+          "wine_name": { "type": "string" },
+          "personal_note": { "type": "string" },
+          "user_id": { "type": "string", "default": "default" }
+        }
+      }
+    },
+    {
+      "name": "get_preference_stats",
+      "description": "스캔 기록을 분석하여 취향 통계 리포트를 생성합니다.",
+      "endpoint": "/tools/get_preference_stats",
+      "method": "POST",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "user_id": { "type": "string", "default": "default" }
+        }
+      }
+    }
+  ]
+}

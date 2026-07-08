@@ -21,4 +21,6 @@ ENV LABEL_SOMMELIER_DB_DIR="/app/data"
 ENV ANTHROPIC_API_KEY=""
 ENV KAKAO_REST_API_KEY=""
 
-CMD ["label-sommelier"]
+EXPOSE 8080
+
+CMD ["label-sommelier-http"]
