@@ -7,6 +7,7 @@ import anthropic
 from mcp.types import TextContent, Tool
 
 from . import db
+from .key_context import get_anthropic_key
 from .toolhandler import ToolHandler
 
 _DEFAULT_USER = "default"
@@ -151,7 +152,7 @@ class GetPreferenceStatsHandler(ToolHandler):
             ))]
 
         # AI 인사이트 추가
-        key = os.environ.get("ANTHROPIC_API_KEY", "")
+        key = get_anthropic_key()
         insight = ""
         if key:
             prompt = f"""와인 취향 통계를 분석해서 한국어로 2-3문장 인사이트를 제공해주세요:
@@ -173,4 +174,4 @@ class GetPreferenceStatsHandler(ToolHandler):
                 pass
 
         result = {**stats, "ai_insight": insight, "saved_preference": pref}
-        return [TextContent(type="text", text=json.dumps(result, ensure_ascii=False, indent=2))]
+        return [TextContent(type="text", text=json.dumps(result, ensure_as

@@ -9,13 +9,14 @@ import anthropic
 from mcp.types import TextContent, Tool
 
 from . import db
+from .key_context import get_anthropic_key
 from .toolhandler import ToolHandler
 
 _DEFAULT_USER = "default"
 
 
 def _ai_client() -> anthropic.Anthropic:
-    key = os.environ.get("ANTHROPIC_API_KEY", "")
+    key = get_anthropic_key()
     if not key:
         raise RuntimeError("ANTHROPIC_API_KEY 환경변수가 설정되지 않았습니다.")
     return anthropic.Anthropic(api_key=key)
@@ -131,12 +132,15 @@ class ScanWineLabelHandler(ToolHandler):
                     {"error": f"파일을 찾을 수 없습니다: {image_path}"}, ensure_ascii=False
                 ))]
             suffix = p.suffix.lower()
-            media_type = "image/jpeg" if suffix in (".jpg", ".jpeg") else "image/png"
+            media_type = "image/jpeg" if suffix in (
+                ".jpg", ".jpeg") else "image/png"
             with open(p, "rb") as f:
                 b64 = base64.standard_b64encode(f.read()).decode("utf-8")
-            image_content = {"type": "image", "source": {"type": "base64", "media_type": media_type, "data": b64}}
+            image_content = {"type": "image", "source": {
+                "type": "base64", "media_type": media_type, "data": b64}}
         else:
-            image_content = {"type": "image", "source": {"type": "url", "url": image_url}}
+            image_content = {"type": "image", "source": {
+                "type": "url", "url": image_url}}
 
         prompt = """이 와인 라벨을 분석하여 다음 JSON 형식으로 정보를 추출해주세요:
 {
@@ -164,7 +168,8 @@ taste_profile 값은 1(매우 낮음)~5(매우 높음) 정수. 라벨에서 확�
         resp = client.messages.create(
             model="claude-sonnet-4-6",
             max_tokens=1024,
-            messages=[{"role": "user", "content": [image_content, {"type": "text", "text": prompt}]}],
+            messages=[{"role": "user", "content": [
+                image_content, {"type": "text", "text": prompt}]}],
         )
         raw = resp.content[0].text.strip()
 
@@ -452,4 +457,4 @@ JSON만 반환하세요."""
             return [TextContent(type="text", text=json.dumps(
                 {"error": "추천 생성 실패", "raw": raw}, ensure_ascii=False
             ))]
-        return [TextContent(type="text", text=json.dumps(result, ensure_ascii=False, indent=2))]
+      

@@ -7,6 +7,7 @@ from typing import Any, Sequence
 
 from mcp.types import TextContent, Tool
 
+from .key_context import get_kakao_key
 from .toolhandler import ToolHandler
 
 
@@ -41,7 +42,7 @@ class FindWineShopsHandler(ToolHandler):
         )
 
     def run_tool(self, args: dict[str, Any]) -> Sequence[TextContent]:
-        api_key = os.environ.get("KAKAO_REST_API_KEY", "")
+        api_key = get_kakao_key()
         if not api_key:
             return [TextContent(type="text", text=json.dumps(
                 {"error": "KAKAO_REST_API_KEY 환경변수가 설정되지 않았습니다. claude_desktop_config.json에 키를 추가해주세요."},
@@ -127,4 +128,4 @@ class FindWineShopsHandler(ToolHandler):
             "radius_m": radius,
             "total_found": len(results),
             "shops": results,
-        }, ensure_ascii=False, indent=2))]
+        }, ensure_ascii=False

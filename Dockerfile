@@ -17,9 +17,11 @@ RUN uv pip install --system .
 RUN mkdir -p /app/data
 ENV LABEL_SOMMELIER_DB_DIR="/app/data"
 
-# 환경변수는 런타임에 주입
-ENV ANTHROPIC_API_KEY=""
-ENV KAKAO_REST_API_KEY=""
+# 환경변수 (Private repo에서만 사용)
+ARG ANTHROPIC_API_KEY=""
+ARG KAKAO_REST_API_KEY=""
+ENV ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY}
+ENV KAKAO_REST_API_KEY=${KAKAO_REST_API_KEY}
 
 EXPOSE 8080
 

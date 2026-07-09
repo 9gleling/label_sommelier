@@ -6,6 +6,7 @@ from typing import Any, Sequence
 import anthropic
 from mcp.types import TextContent, Tool
 
+from .key_context import get_anthropic_key
 from .toolhandler import ToolHandler
 
 
@@ -42,7 +43,7 @@ class SearchWineHandler(ToolHandler):
         wine_type = args.get("wine_type", "")
         budget = args.get("max_budget_krw")
 
-        key = os.environ.get("ANTHROPIC_API_KEY", "")
+        key = get_anthropic_key()
         if not key:
             return [TextContent(type="text", text=json.dumps(
                 {"error": "ANTHROPIC_API_KEY 환경변수가 설정되지 않았습니다."}, ensure_ascii=False
@@ -91,4 +92,4 @@ JSON만 반환하세요."""
             return [TextContent(type="text", text=json.dumps(
                 {"error": "검색 결과 파싱 실패", "raw": raw}, ensure_ascii=False
             ))]
-        return [TextContent(type="text", text=json.dumps(result, ensure_ascii=False, indent=2))]
+        return [TextContent(type="text", text=json.dumps(result, ensure_as
