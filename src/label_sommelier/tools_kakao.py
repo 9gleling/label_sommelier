@@ -128,4 +128,4 @@ class FindWineShopsHandler(ToolHandler):
             "radius_m": radius,
             "total_found": len(results),
             "shops": results,
-        }, ensure_ascii=False
+        }, ensure_ascii=False, indent=2))]

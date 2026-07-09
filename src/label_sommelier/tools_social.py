@@ -174,4 +174,4 @@ class GetPreferenceStatsHandler(ToolHandler):
                 pass
 
         result = {**stats, "ai_insight": insight, "saved_preference": pref}
-        return [TextContent(type="text", text=json.dumps(result, ensure_as
+        return [TextContent(type="text", text=json.dumps(result, ensure_ascii=False, indent=2))]

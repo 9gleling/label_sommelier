@@ -457,4 +457,4 @@ JSON만 반환하세요."""
             return [TextContent(type="text", text=json.dumps(
                 {"error": "추천 생성 실패", "raw": raw}, ensure_ascii=False
             ))]
-      
+        return [TextContent(type="text", text=json.dumps(result, ensure_ascii=False, indent=2))]
